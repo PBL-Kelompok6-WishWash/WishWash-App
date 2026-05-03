@@ -78,6 +78,7 @@ DB_NAME=wishwash_db
 
 # Backend API URL
 NEXT_PUBLIC_API_URL=http://localhost:8080
+```
 
 ---
 
