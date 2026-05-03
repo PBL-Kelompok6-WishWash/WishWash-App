@@ -15,16 +15,32 @@ Project ini menggunakan kombinasi teknologi modern untuk performa dan skalabilit
 
 ## 📂 Struktur Folder Project
 ```text
-WishWash-App/
-├── backend/             # Source code Golang (API & Database Logic)
+WISHWASH-APP/
+├── assets/              # Aset gambar/icon global
+├── backend/             # Source code API (Golang)
 │   ├── cmd/             # Entry point aplikasi (main.go)
 │   ├── config/          # Konfigurasi Database & Environment
-│   ├── controllers/     # Logika bisnis per fitur
-│   ├── models/          # Definisi tabel database (GORM Structs)
-│   └── go.mod           # Dependency Manager Go
-├── mobile_app/          # Source code aplikasi Flutter
-├── web_app/             # Source code dashboard Next.js
-└── README.md            # Dokumentasi project
+│   ├── controller/      # Handler & Logika bisnis per fitur
+│   ├── middleware/      # Keamanan (Auth, dll)
+│   ├── model/           # Definisi tabel database (GORM Structs)
+│   ├── repository/      # Fungsi query langsung ke database
+│   ├── route/           # Pengaturan endpoint API
+│   ├── go.mod           # Dependency Manager Go
+│   └── go.sum           # Checksum security Go
+├── mobile/              # Source code App Customer & Kurir (Flutter)
+│   ├── android/         # Build file khusus Android
+│   ├── ios/             # Build file khusus iOS
+│   ├── lib/             # Kodingan utama antarmuka & logika Dart
+│   ├── pubspec.yaml     # Dependency Manager Flutter
+│   └── README.md        # Dokumentasi spesifik mobile
+├── web/                 # Source code Dashboard Admin (Next.js)
+│   ├── public/          # Aset statis publik web
+│   ├── src/             # Kodingan utama antarmuka & logika React
+│   ├── package.json     # Dependency Manager Node.js
+│   ├── next.config.ts   # Konfigurasi framework Next.js
+│   └── README.md        # Dokumentasi spesifik web
+├── .env                 # Environment variables (PENTING: Jangan di-push!)
+└── README.md            # Dokumentasi utama project ini
 ```
 
 ---
