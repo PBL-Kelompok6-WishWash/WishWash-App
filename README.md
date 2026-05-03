@@ -49,7 +49,7 @@ Sebelum memulai, pastikan perangkat Anda sudah terinstall:
 
 ---
 
-## 🏁 Setup Awal (Untuk Anggota Kelompok)
+## 🏁 Setup Awal
 
 Gunakan perintah ini di terminal VS Code untuk mengambil project pertama kali:
 ```bash
