@@ -1,0 +1,26 @@
+# Dependency folders
+node_modules/
+.dart_tool/
+build/
+bin/
+obj/
+
+# Environment variables (RAHASIA!)
+.env
+.env.local
+.env.*.local
+
+# IDE & OS files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+Thumbs.db
+
+# Mobile Specific
+/mobile/android/build/
+/mobile/ios/Flutter/Generated.xcconfig
