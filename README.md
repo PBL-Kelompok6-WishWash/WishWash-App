@@ -61,7 +61,23 @@ Sebelum memulai, pastikan perangkat Anda sudah terinstall:
 1. Buka **DBeaver** dan buat koneksi baru ke PostgreSQL lokal.
 2. Buat database baru dengan nama: `wishwash_db`.
 3. **Penting (Port):** Secara default PostgreSQL menggunakan port `5432`. Jika port tersebut sudah terpakai oleh versi lama, gunakan port `5433`.
-4. Pastikan file `.env` di folder backend (jika ada) atau konfigurasi di `config/database.go` sudah sesuai dengan `user`, `password`, dan `port` database Anda.
+
+## ⚙️ Konfigurasi Environment (.env)
+
+Karena file `.env` asli tidak disertakan dalam repository demi keamanan, **setiap anggota tim wajib membuat file .env secara manual** di root folder (`WishWash-App/`) agar koneksi database dapat berjalan.
+
+1. Buat file baru dengan nama `.env` di folder utama project.
+2. Salin dan tempel konfigurasi berikut ke dalam file tersebut:
+```env
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5433
+DB_USER=postgres
+DB_PASSWORD=12345678
+DB_NAME=wishwash_db
+
+# Backend API URL
+NEXT_PUBLIC_API_URL=http://localhost:8080
 
 ---
 
