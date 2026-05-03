@@ -1,1 +1,109 @@
-# WishWash-App
+# 🧺 WishWash - Laundry Management System
+
+WishWash adalah solusi manajemen laundry terintegrasi yang dirancang untuk mendigitalisasi operasional laundry. Sistem ini mencakup pelacakan status cucian secara real-time, manajemen pesanan, inventaris, dan laporan keuangan untuk memudahkan pemilik laundry dan pelanggan.
+
+## 🚀 Tech Stack
+
+Project ini menggunakan kombinasi teknologi modern untuk performa dan skalabilitas tinggi:
+
+- **Backend:** Golang (GORM, PostgreSQL Driver)
+- **Database:** PostgreSQL 18
+- **Web (Admin/Owner):** Next.js (React)
+- **Mobile (Customer/Kurir):** Flutter (Dart)
+
+---
+
+## 📂 Struktur Folder Project
+```text
+WishWash-App/
+├── backend/             # Source code Golang (API & Database Logic)
+│   ├── cmd/             # Entry point aplikasi (main.go)
+│   ├── config/          # Konfigurasi Database & Environment
+│   ├── controllers/     # Logika bisnis per fitur
+│   ├── models/          # Definisi tabel database (GORM Structs)
+│   └── go.mod           # Dependency Manager Go
+├── mobile_app/          # Source code aplikasi Flutter
+├── web_app/             # Source code dashboard Next.js
+└── README.md            # Dokumentasi project
+```
+
+---
+
+## 🛠️ Persyaratan Sistem (Wajib Install)
+
+Sebelum memulai, pastikan perangkat Anda sudah terinstall:
+1. **Golang:** [Download Go](https://golang.org/dl/) (versi 1.20+)
+2. **PostgreSQL:** [Download Postgres](https://www.postgresql.org/download/)
+3. **DBeaver:** [Download DBeaver](https://dbeaver.io/download/) (Rekomendasi GUI Database)
+4. **Node.js:** Untuk menjalankan Web Next.js
+5. **Flutter SDK:** Untuk menjalankan aplikasi Mobile
+
+---
+
+## 💾 Setup Database
+
+1. Buka **DBeaver** dan buat koneksi baru ke PostgreSQL lokal.
+2. Buat database baru dengan nama: `wishwash_db`.
+3. **Penting (Port):** Secara default PostgreSQL menggunakan port `5432`. Jika port tersebut sudah terpakai oleh versi lama, gunakan port `5433`.
+4. Pastikan file `.env` di folder backend (jika ada) atau konfigurasi di `config/database.go` sudah sesuai dengan `user`, `password`, dan `port` database Anda.
+
+---
+
+## 🏁 Setup Awal (Untuk Anggota Kelompok)
+
+Gunakan perintah ini di terminal VS Code untuk mengambil project pertama kali:
+```bash
+# 1. Clone repository ke komputer Anda
+git clone [https://github.com/PBL-Kelompok6-WishWash/WishWash-App.git](https://github.com/PBL-Kelompok6-WishWash/WishWash-App.git)
+
+# 2. Masuk ke folder project
+cd WishWash-App
+
+# 3. Setup Backend
+cd backend
+go mod tidy
+
+# 4. Jalankan server backend
+go run cmd/main.go
+```
+
+---
+
+## 🔄 Panduan Git & Kerja Tim (Workflow)
+
+Ikuti aturan ini agar kode antar anggota tidak bentrok:
+
+### 1. Sebelum Mulai Kerja (Wajib Pull)
+Biasakan menarik update terbaru dari tim sebelum Anda mulai mengedit kode.
+```bash
+git pull origin main
+```
+
+### 2. Menyimpan & Mengirim Hasil Kerja (Push)
+Setelah selesai menambah fitur atau memperbaiki bug:
+```bash
+# Cek file yang berubah
+git status
+
+# Tambahkan semua perubahan
+git add .
+
+# Beri pesan perubahan (Harus Jelas)
+git commit -m "feat: [nama_fitur] menambah tabel user"
+
+# Kirim ke GitHub
+git push origin main
+```
+
+### 3. Cara Mengatasi Conflict
+Jika saat `git pull` muncul error "Conflict", buka file yang bermasalah di VS Code, pilih bagian kode yang ingin dipertahankan, simpan file, lalu ulangi proses `add`, `commit`, dan `push`.
+
+---
+
+## 🛡️ Aturan Kontribusi
+- **Dilarang** push file konfigurasi pribadi atau `.env` yang berisi password asli.
+- **Wajib** menjalankan aplikasi secara lokal (`go run`) sebelum melakukan push untuk memastikan kode tidak error.
+- Gunakan folder `cmd/main.go` sebagai titik masuk utama aplikasi backend.
+
+---
+*Dibuat oleh Tim PBL Kelompok 6 - Teknologi Rekayasa Komputer (POLINES)*
