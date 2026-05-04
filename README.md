@@ -61,9 +61,12 @@ Sebelum memulai, pastikan perangkat Anda sudah terinstall:
 Ikuti urutan ini secara berurutan agar aplikasi berjalan lancar:
 
 ### 1. Clone Project
-Ambil kode sumber terbaru dari repository:
+Ambil kode sumber terbaru dari repository ke komputer lokal Anda:
 ```bash
+# Mengunduh (clone) seluruh repository beserta history-nya dari GitHub
 git clone [https://github.com/PBL-Kelompok6-WishWash/WishWash-App.git](https://github.com/PBL-Kelompok6-WishWash/WishWash-App.git)
+
+# Berpindah direktori masuk ke dalam folder utama project yang baru saja diunduh
 cd WishWash-App
 ```
 
@@ -91,9 +94,15 @@ NEXT_PUBLIC_API_URL=http://localhost:8080
 > **Catatan:** Sesuaikan `DB_PASSWORD` dan `DB_PORT` dengan pengaturan PostgreSQL di komputer masing-masing jika berbeda.
 
 ### 4. Jalankan Backend
+Siapkan environment Go dan jalankan server lokal aplikasi:
 ```bash
+# Berpindah direktori masuk ke folder khusus backend (area kerja Golang)
 cd backend
+
+# Membaca file go.mod, membersihkan library yang tidak dipakai, dan mengunduh dependensi baru
 go mod tidy
+
+# Menjalankan server aplikasi backend melalui titik masuk utama (entry point)
 go run cmd/main.go
 ```
 
