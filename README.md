@@ -56,14 +56,23 @@ Sebelum memulai, pastikan perangkat Anda sudah terinstall:
 
 ---
 
-## 💾 Setup Database
+## 🏁 Panduan Memulai (Quick Start)
 
-1. Buka **DBeaver** dan buat koneksi baru ke PostgreSQL lokal.
-2. Buat database baru dengan nama: `wishwash_db`.
-3. **Penting (Port):** Secara default PostgreSQL menggunakan port `5432`. Jika port tersebut sudah terpakai oleh versi lama, gunakan port `5433`.
+Ikuti urutan ini secara berurutan agar aplikasi berjalan lancar:
 
-## ⚙️ Konfigurasi Environment (.env)
+### 1. Clone Project
+Ambil kode sumber terbaru dari repository:
+```bash
+git clone [https://github.com/PBL-Kelompok6-WishWash/WishWash-App.git](https://github.com/PBL-Kelompok6-WishWash/WishWash-App.git)
+cd WishWash-App
+```
 
+### 2. Setup Database
+1. Buka **DBeaver**, buat koneksi PostgreSQL.
+2. Buat database baru bernama `wishwash_db`.
+3. Pastikan PostgreSQL berjalan di port `5432` atau `5433`.
+
+### 3. Konfigurasi Environment (.env)
 Karena file `.env` asli tidak disertakan dalam repository demi keamanan, **setiap anggota tim wajib membuat file .env secara manual** di root folder (`WishWash-App/`) agar koneksi database dapat berjalan.
 
 1. Buat file baru dengan nama `.env` di folder utama project.
@@ -79,24 +88,12 @@ DB_NAME=wishwash_db
 # Backend API URL
 NEXT_PUBLIC_API_URL=http://localhost:8080
 ```
+> **Catatan:** Sesuaikan `DB_PASSWORD` dan `DB_PORT` dengan pengaturan PostgreSQL di komputer masing-masing jika berbeda.
 
----
-
-## 🏁 Setup Awal
-
-Gunakan perintah ini di terminal VS Code untuk mengambil project pertama kali:
+### 4. Jalankan Backend
 ```bash
-# 1. Clone repository ke komputer Anda
-git clone [https://github.com/PBL-Kelompok6-WishWash/WishWash-App.git](https://github.com/PBL-Kelompok6-WishWash/WishWash-App.git)
-
-# 2. Masuk ke folder project
-cd WishWash-App
-
-# 3. Setup Backend
 cd backend
 go mod tidy
-
-# 4. Jalankan server backend
 go run cmd/main.go
 ```
 
