@@ -1,148 +1,169 @@
-# 🧺 WishWash - Laundry Management System
+<div align="center">
+  
+# 🧺 WishWash
+**Laundry Management System**
 
-WishWash adalah solusi manajemen laundry terintegrasi yang dirancang untuk mendigitalisasi operasional laundry. Sistem ini mencakup pelacakan status cucian secara real-time, manajemen pesanan, inventaris, dan laporan keuangan untuk memudahkan pemilik laundry dan pelanggan.
+[![Go Version](https://img.shields.io/badge/Go-1.20+-00ADD8?style=flat&logo=go&logoColor=white)](https://golang.org/)
+[![Flutter](https://img.shields.io/badge/Flutter-Mobile-02569B?style=flat&logo=flutter&logoColor=white)](https://flutter.dev/)
+[![Next.js](https://img.shields.io/badge/Next.js-Web-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
-## 🚀 Tech Stack
+WishWash adalah solusi manajemen laundry terintegrasi end-to-end yang dirancang untuk mendigitalisasi dan mengotomatisasi operasional laundry. Sistem ini mencakup pelacakan status cucian secara real-time, manajemen pesanan, manajemen operasional, dan komunikasi terpadu.
 
-Project ini menggunakan kombinasi teknologi modern untuk performa dan skalabilitas tinggi:
-
-- **Backend:** Golang (GORM, PostgreSQL Driver)
-- **Database:** PostgreSQL 18
-- **Web (Admin/Owner):** Next.js (React)
-- **Mobile (Customer/Kurir):** Flutter (Dart)
+</div>
 
 ---
 
-## 📂 Struktur Folder Project
+## ✨ Fitur Utama
+
+Aplikasi ini dibagi menjadi 3 antarmuka utama yang disesuaikan untuk setiap peran pengguna:
+
+### 👑 Admin Dashboard (Web)
+*   **Manajemen Master Data**: Kelola pelanggan, karyawan/kurir, layanan, paket, parfum, dan metode pembayaran.
+*   **Manajemen Promo**: Buat dan atur kode promo diskon untuk pelanggan.
+*   **Pantauan Transaksi**: Lihat semua pesanan masuk, proses, hingga selesai secara real-time.
+*   **Laporan & Analitik**: (Akan datang) Rekapitulasi pendapatan dan performa laundry.
+
+### 📱 Customer App (Mobile)
+*   **Pemesanan Mudah**: Pesan layanan laundry dengan pilihan paket durasi dan preferensi parfum.
+*   **Manajemen Alamat**: Simpan berbagai alamat (rumah, kos, kantor) dengan satu alamat utama (Primary).
+*   **Live Tracking**: Lacak status pesanan secara real-time (Mulai dari *Menunggu Penjemputan* hingga *Selesai*).
+*   **Chat Real-time**: Komunikasi langsung dengan kurir yang bertugas menjemput/mengantar cucian.
+
+### 🛵 Courier/Karyawan App (Mobile)
+*   **Manajemen Tugas**: Terima tugas penjemputan dan pengantaran cucian.
+*   **Update Status**: Perbarui status cucian ke database hanya dengan beberapa tap.
+*   **Komunikasi Pelanggan**: Chat langsung dengan pelanggan untuk konfirmasi lokasi atau jadwal.
+
+---
+
+## 🚀 Tech Stack & Arsitektur Sistem
+
+Proyek ini dibangun menggunakan arsitektur modern berbasis micro-services dan pemisahan *frontend-backend* yang bersih:
+
+| Komponen | Teknologi | Deskripsi |
+| :--- | :--- | :--- |
+| **Backend API** | Go (Golang), Gin, GORM | RESTful API berkinerja tinggi, dilengkapi autentikasi JWT Role-based. |
+| **Database** | PostgreSQL 18 | Sistem manajemen basis data relasional untuk integritas data. |
+| **Web Frontend** | Next.js, React, Tailwind CSS | Dasbor admin yang responsif, cepat, dan modern. |
+| **Mobile Frontend** | Flutter, Dart | Aplikasi lintas platform (Android/iOS) dengan UI/UX yang dinamis. |
+
+---
+
+## 📂 Struktur Folder Proyek
+
 ```text
 WISHWASH-APP/
 ├── assets/              # Aset gambar/icon global
 ├── backend/             # Source code API (Golang)
 │   ├── cmd/             # Entry point aplikasi (main.go)
 │   ├── config/          # Konfigurasi Database & Environment
-│   ├── controller/      # Handler & Logika bisnis per fitur
-│   ├── middleware/      # Keamanan (Auth, dll)
-│   ├── model/           # Definisi tabel database (GORM Structs)
-│   ├── repository/      # Fungsi query langsung ke database
-│   ├── route/           # Pengaturan endpoint API
-│   ├── go.mod           # Dependency Manager Go
-│   └── go.sum           # Checksum security Go
+│   ├── controller/      # Handler & Logika bisnis API
+│   ├── middleware/      # Keamanan (JWT Auth, Role checking)
+│   ├── model/           # Definisi skema tabel (GORM Structs)
+│   ├── repository/      # Fungsi query interaksi ke database
+│   ├── route/           # Pengaturan endpoint REST API
+│   └── seeder/          # Data awal (dummy data) database
 ├── mobile/              # Source code App Customer & Kurir (Flutter)
-│   ├── android/         # Build file khusus Android
-│   ├── ios/             # Build file khusus iOS
 │   ├── lib/             # Kodingan utama antarmuka & logika Dart
-│   ├── pubspec.yaml     # Dependency Manager Flutter
-│   └── README.md        # Dokumentasi spesifik mobile
+│   │   ├── screens/     # Tampilan halaman per peran (admin/pelanggan/karyawan)
+│   │   ├── services/    # Penghubung API ke backend
+│   │   └── widgets/     # Komponen UI yang dapat digunakan ulang
+│   └── pubspec.yaml     # Dependency Manager Flutter
 ├── web/                 # Source code Dashboard Admin (Next.js)
-│   ├── public/          # Aset statis publik web
-│   ├── src/             # Kodingan utama antarmuka & logika React
-│   ├── package.json     # Dependency Manager Node.js
-│   ├── next.config.ts   # Konfigurasi framework Next.js
-│   └── README.md        # Dokumentasi spesifik web
-├── .env                 # Environment variables (PENTING: Jangan di-push!)
-└── README.md            # Dokumentasi utama project ini
+│   ├── src/app/         # Next.js App Router (Halaman & Layout)
+│   ├── src/components/  # Komponen React (Sidebar, Header, dll)
+│   ├── src/services/    # Penghubung API ke backend
+│   └── package.json     # Dependency Manager Node.js
+├── api_documentation.md # Dokumentasi Lengkap Endpoint API
+└── README.md            # Dokumentasi utama proyek
 ```
 
 ---
 
-## 🛠️ Persyaratan Sistem (Wajib Install)
+## 🛠️ Panduan Memulai (Quick Start)
 
-Sebelum memulai, pastikan perangkat Anda sudah terinstall:
-1. **Golang:** [Download Go](https://golang.org/dl/) (versi 1.20+)
-2. **PostgreSQL:** [Download Postgres](https://www.postgresql.org/download/)
-3. **DBeaver:** [Download DBeaver](https://dbeaver.io/download/) (Rekomendasi GUI Database)
-4. **Node.js:** Untuk menjalankan Web Next.js
-5. **Flutter SDK:** Untuk menjalankan aplikasi Mobile
-
----
-
-## 🏁 Panduan Memulai (Quick Start)
-
-Ikuti urutan ini secara berurutan agar aplikasi berjalan lancar:
-
-### 1. Clone Project
-Ambil kode sumber terbaru dari repository ke komputer lokal Anda:
-```bash
-# Mengunduh (clone) seluruh repository beserta history-nya dari GitHub
-git clone [https://github.com/PBL-Kelompok6-WishWash/WishWash-App.git](https://github.com/PBL-Kelompok6-WishWash/WishWash-App.git)
-
-# Berpindah direktori masuk ke dalam folder utama project yang baru saja diunduh
-cd WishWash-App
-```
+### 1. Persyaratan Sistem
+Pastikan perangkat Anda sudah terinstal perangkat lunak berikut:
+*   [Golang](https://golang.org/dl/) (v1.20+)
+*   [PostgreSQL](https://www.postgresql.org/download/)
+*   [Node.js & npm](https://nodejs.org/)
+*   [Flutter SDK](https://docs.flutter.dev/get-started/install)
 
 ### 2. Setup Database
-1. Buka **DBeaver**, buat koneksi PostgreSQL.
-2. Buat database baru bernama `wishwash_db`.
-3. Pastikan PostgreSQL berjalan di port `5432` atau `5433`.
+1. Buat database baru bernama `wishwash_db` di PostgreSQL Anda.
+2. Pastikan database berjalan (default port `5433` atau sesuaikan dengan pengaturan Anda).
 
-### 3. Konfigurasi Environment (.env)
-Karena file `.env` asli tidak disertakan dalam repository demi keamanan, **setiap anggota tim wajib membuat file .env secara manual** di root folder (`WishWash-App/`) agar koneksi database dapat berjalan.
-
-1. Buat file baru dengan nama `.env` di folder utama project.
-2. Salin dan tempel konfigurasi berikut ke dalam file tersebut:
+### 3. Konfigurasi Environment (`.env`)
+Buat file bernama `.env` di **root folder** proyek (`WishWash-App/.env`) dan isi dengan konfigurasi berikut:
 ```env
 # Database Configuration
 DB_HOST=localhost
 DB_PORT=5433
 DB_USER=postgres
-DB_PASSWORD=12345678
+DB_PASSWORD=password_database_anda
 DB_NAME=wishwash_db
 
-# Backend API URL
+# Backend API URL (Digunakan oleh Web & Mobile)
 NEXT_PUBLIC_API_URL=http://localhost:8080
 ```
-> **Catatan:** Sesuaikan `DB_PASSWORD` dan `DB_PORT` dengan pengaturan PostgreSQL di komputer masing-masing jika berbeda.
+> ⚠️ **Penting**: Jangan pernah mem-push file `.env` yang berisi kredensial asli ke GitHub!
 
-### 4. Jalankan Backend
-Siapkan environment Go dan jalankan server lokal aplikasi:
+### 4. Menjalankan Backend (API)
 ```bash
-# Berpindah direktori masuk ke folder khusus backend (area kerja Golang)
 cd backend
-
-# Membaca file go.mod, membersihkan library yang tidak dipakai, dan mengunduh dependensi baru
 go mod tidy
-
-# Menjalankan server aplikasi backend melalui titik masuk utama (entry point)
 go run cmd/main.go
 ```
+*Server akan berjalan di `http://localhost:8080` dan otomatis melakukan migrasi tabel database.*
 
----
-
-## 🔄 Panduan Git & Kerja Tim (Workflow)
-
-Ikuti aturan ini agar kode antar anggota tidak bentrok:
-
-### 1. Sebelum Mulai Kerja (Wajib Pull)
-Biasakan menarik update terbaru dari tim sebelum Anda mulai mengedit kode.
+### 5. Menjalankan Web (Dashboard Admin)
 ```bash
-git pull origin main
+cd web
+npm install
+npm run dev
+```
+*Buka browser dan akses `http://localhost:3000`.*
+
+### 6. Menjalankan Mobile (Aplikasi)
+```bash
+cd mobile
+flutter pub get
+flutter run
 ```
 
-### 2. Menyimpan & Mengirim Hasil Kerja (Push)
-Setelah selesai menambah fitur atau memperbaiki bug:
-```bash
-# Cek file yang berubah
-git status
+---
 
-# Tambahkan semua perubahan
-git add .
-
-# Beri pesan perubahan (Harus Jelas)
-git commit -m "feat: [nama_fitur] menambah tabel user"
-
-# Kirim ke GitHub
-git push origin main
-```
-
-### 3. Cara Mengatasi Conflict
-Jika saat `git pull` muncul error "Conflict", buka file yang bermasalah di VS Code, pilih bagian kode yang ingin dipertahankan, simpan file, lalu ulangi proses `add`, `commit`, dan `push`.
+## 📖 Dokumentasi API
+Untuk melihat dokumentasi lengkap mengenai seluruh endpoint, metode request, dan contoh response dari sistem backend WishWash, silakan merujuk ke file:
+👉 **[Dokumentasi API Lengkap (api_documentation.md)](api_documentation.md)**
 
 ---
 
-## 🛡️ Aturan Kontribusi
-- **Dilarang** push file konfigurasi pribadi atau `.env` yang berisi password asli.
-- **Wajib** menjalankan aplikasi secara lokal (`go run`) sebelum melakukan push untuk memastikan kode tidak error.
-- Gunakan folder `cmd/main.go` sebagai titik masuk utama aplikasi backend.
+## 🔄 Panduan Kerja Tim (Git Workflow)
+
+Agar kolaborasi kode berjalan rapi dan tidak terjadi konflik, ikuti aturan dasar berikut:
+
+1. **Selalu Tarik Pembaruan Terbaru**:
+   ```bash
+   git pull origin main
+   ```
+2. **Simpan dan Kirim Perubahan dengan Pesan yang Jelas**:
+   Gunakan format standar untuk *commit message*, contohnya:
+   *   `feat: [nama_fitur] deskripsi` (Untuk fitur baru)
+   *   `fix: [nama_fitur] deskripsi` (Untuk perbaikan bug)
+   *   `ui: update tampilan dashboard` (Untuk perubahan desain)
+   
+   ```bash
+   git add .
+   git commit -m "feat: menambah endpoint tracking status"
+   git push origin main
+   ```
 
 ---
-*Dibuat oleh Tim PBL Kelompok 6 - Teknologi Rekayasa Komputer (POLINES)*
+
+<div align="center">
+  <b>Dikembangkan dengan ❤️ oleh Tim PBL Kelompok 6</b><br>
+  Program Studi Teknologi Rekayasa Komputer<br>
+  Politeknik Negeri Semarang (POLINES)
+</div>

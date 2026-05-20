@@ -31,6 +31,20 @@ Untuk seluruh endpoint yang bertanda `[🔒 JWT SECURE]`, aplikasi wajib menyert
 
 ---
 
+
+---
+
+## 🛑 Standar Respon Gagal (Error) Global
+Sebagian besar endpoint dalam API ini mematuhi standar respon error berikut. 
+Setiap error akan mengembalikan HTTP Status Code yang relevan beserta format JSON: `{"error": "Deskripsi error"}`.
+
+*   **400 Bad Request**: Dikembalikan ketika format input JSON salah, tipe data tidak sesuai, atau validasi gagal (contoh: ID tidak valid).
+*   **401 Unauthorized**: Dikembalikan saat token JWT tidak ada, salah, atau sudah kadaluarsa (khusus endpoint `[🔒 JWT SECURE]`).
+*   **403 Forbidden**: Dikembalikan saat user mencoba mengakses endpoint milik *Role* lain (contoh: Karyawan mengakses rute Admin).
+*   **404 Not Found**: Dikembalikan ketika data yang dicari (berdasarkan parameter `:id`) tidak ditemukan di database.
+*   **500 Internal Server Error**: Dikembalikan saat terjadi kesalahan fatal pada sistem backend atau query database (GORM).
+
+
 ## 🖥️ API Kelompok Admin
 Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddleware` dan `AdminOnly` (Role ID = 1).
 
@@ -58,6 +72,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **409 Conflict** (Duplikat Data):
+    ```json
+    {
+      "error": "Data duplikat (misal: Username/Email sudah terdaftar)"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 2. PUT Edit Data Pelanggan
 * **Endpoint**: `PUT /admin/pelanggan/:id`
 * **Deskripsi**: Mengubah data profil pelanggan berdasarkan ID Pelanggan.
@@ -75,6 +122,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 3. DEL Hapus Data Pelanggan
 * **Endpoint**: `DELETE /admin/pelanggan/:id`
 * **Deskripsi**: Menghapus akun pelanggan secara permanen dari sistem.
@@ -84,6 +164,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "message": "Data pelanggan berhasil dihapus"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (ID Tidak Valid):
+    ```json
+    {
+      "error": "ID parameter tidak valid"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 #### 4. GET Ambil Data Pelanggan
 * **Endpoint**: `GET /admin/pelanggan`
@@ -111,6 +224,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   ]
   ```
 
+* **Respons Error (Gagal)**:
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 ---
 
 ### 💼 Manajemen Karyawan
@@ -137,6 +271,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **409 Conflict** (Duplikat Data):
+    ```json
+    {
+      "error": "Data duplikat (misal: Username/Email sudah terdaftar)"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 2. PUT Edit Data Karyawan
 * **Endpoint**: `PUT /admin/karyawan/:id`
 * **Deskripsi**: Mengubah profil detail karyawan operasional.
@@ -156,6 +323,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 3. DEL Hapus Data Karyawan
 * **Endpoint**: `DELETE /admin/karyawan/:id`
 * **Deskripsi**: Menghapus data karyawan secara permanen dari sistem database.
@@ -165,6 +365,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "message": "Data karyawan berhasil dihapus"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (ID Tidak Valid):
+    ```json
+    {
+      "error": "ID parameter tidak valid"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 #### 4. GET Ambil Data Karyawan
 * **Endpoint**: `GET /admin/karyawan`
@@ -195,6 +428,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   ]
   ```
 
+* **Respons Error (Gagal)**:
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 ---
 
 ### 🧺 Manajemen Layanan
@@ -221,6 +475,33 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 2. PUT Edit Data Layanan
 * **Endpoint**: `PUT /admin/layanan/:id`
 * **Deskripsi**: Memperbarui harga, deskripsi, warna, atau gambar layanan.
@@ -239,6 +520,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 3. DEL Hapus Data Layanan
 * **Endpoint**: `DELETE /admin/layanan/:id`
 * **Deskripsi**: Menghapus salah satu layanan laundry dari katalog master.
@@ -248,6 +562,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "message": "Layanan berhasil dihapus"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (ID Tidak Valid):
+    ```json
+    {
+      "error": "ID parameter tidak valid"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 #### 4. GET Ambil Data Layanan
 * **Endpoint**: `GET /admin/layanan`
@@ -329,6 +676,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   ]
   ```
 
+* **Respons Error (Gagal)**:
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 ---
 
 ### 🌹 Manajemen Parfum
@@ -352,6 +720,33 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 2. PUT Edit Data Parfum
 * **Endpoint**: `PUT /admin/parfum/:id`
 * **Deskripsi**: Memperbarui status ketersediaan aroma parfum.
@@ -368,6 +763,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 3. DEL Hapus Data Parfum
 * **Endpoint**: `DELETE /admin/parfum/:id`
 * **Deskripsi**: Menghapus varian parfum dari database.
@@ -377,6 +805,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "message": "Parfum berhasil dihapus"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (ID Tidak Valid):
+    ```json
+    {
+      "error": "ID parameter tidak valid"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 #### 4. GET Ambil Data Parfum
 * **Endpoint**: `GET /admin/parfum`
@@ -391,6 +852,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     }
   ]
   ```
+
+* **Respons Error (Gagal)**:
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 ---
 
@@ -417,6 +899,33 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 2. PUT Edit Data Promo
 * **Endpoint**: `PUT /admin/promo/:id`
 * **Request Body (JSON)**:
@@ -432,6 +941,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 3. DEL Hapus Data Promo
 * **Endpoint**: `DELETE /admin/promo/:id`
 * **Respons Sukses (200 OK)**:
@@ -440,6 +982,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "message": "Promo berhasil dihapus"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (ID Tidak Valid):
+    ```json
+    {
+      "error": "ID parameter tidak valid"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 #### 4. GET Ambil Data Promo
 * **Endpoint**: `GET /admin/promo`
@@ -455,6 +1030,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     }
   ]
   ```
+
+* **Respons Error (Gagal)**:
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 ---
 
@@ -478,6 +1074,33 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 2. PUT Edit Data Metode Pembayaran
 * **Endpoint**: `PUT /admin/metode-pembayaran/:id`
 * **Request Body (JSON)**:
@@ -493,6 +1116,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 3. DEL Hapus Data Metode Pembayaran
 * **Endpoint**: `DELETE /admin/metode-pembayaran/:id`
 * **Respons Sukses (200 OK)**:
@@ -501,6 +1157,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "message": "Metode pembayaran berhasil dihapus"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (ID Tidak Valid):
+    ```json
+    {
+      "error": "ID parameter tidak valid"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 #### 4. GET Ambil Data Metode Pembayaran
 * **Endpoint**: `GET /admin/metode-pembayaran`
@@ -516,6 +1205,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     }
   ]
   ```
+
+* **Respons Error (Gagal)**:
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 ---
 
@@ -540,6 +1250,21 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 2. GET Profile Admin `[🔒 JWT SECURE]`
 * **Endpoint**: `GET /profile`
 * **Respons Sukses (200 OK)**:
@@ -552,6 +1277,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "role": "Admin"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 #### 3. PUT Edit Profile Admin `[🔒 JWT SECURE]`
 * **Endpoint**: `PUT /profile/update`
@@ -568,6 +1314,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 4. PUT Edit Password Admin `[🔒 JWT SECURE]`
 * **Endpoint**: `PUT /profile/password`
 * **Request Body (JSON)**:
@@ -583,6 +1362,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "message": "Kata sandi berhasil diperbarui"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 ---
 
@@ -610,6 +1422,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **409 Conflict** (Duplikat Data):
+    ```json
+    {
+      "error": "Data duplikat (misal: Username/Email sudah terdaftar)"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 2. GET Profile Karyawan `[🔒 JWT SECURE]`
 * **Endpoint**: `GET /profile`
 * **Respons Sukses (200 OK)**:
@@ -625,6 +1458,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "role": "Karyawan"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 #### 3. PUT Edit Profile Karyawan `[🔒 JWT SECURE]`
 * **Endpoint**: `PUT /profile/update`
@@ -642,6 +1496,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 4. PUT Edit Password Karyawan `[🔒 JWT SECURE]`
 * **Endpoint**: `PUT /profile/password`
 * **Request Body (JSON)**:
@@ -657,6 +1544,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "message": "Kata sandi berhasil diperbarui"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 ---
 
@@ -682,6 +1602,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **409 Conflict** (Duplikat Data):
+    ```json
+    {
+      "error": "Data duplikat (misal: Username/Email sudah terdaftar)"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 2. POST Register Pelanggan
 * **Endpoint**: `POST /auth/register`
 * **Request Body (JSON)**:
@@ -703,6 +1644,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **409 Conflict** (Duplikat Data):
+    ```json
+    {
+      "error": "Data duplikat (misal: Username/Email sudah terdaftar)"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 3. GET Profile Pelanggan `[🔒 JWT SECURE]`
 * **Endpoint**: `GET /profile`
 * **Respons Sukses (200 OK)**:
@@ -716,6 +1678,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "role": "Pelanggan"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 #### 4. PUT Edit Password Pelanggan `[🔒 JWT SECURE]`
 * **Endpoint**: `PUT /profile/password`
@@ -732,6 +1715,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "message": "Kata sandi berhasil diperbarui"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 ---
 
@@ -752,6 +1768,27 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   ]
   ```
 
+* **Respons Error (Gagal)**:
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 2. POST Tambah Alamat Baru `[🔒 JWT SECURE]`
 * **Endpoint**: `POST /alamat`
 * **Request Body (JSON)**:
@@ -770,6 +1807,33 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 3. PUT Edit Alamat `[🔒 JWT SECURE]`
 * **Endpoint**: `PUT /alamat/:id`
 * **Request Body (JSON)**:
@@ -786,6 +1850,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 4. PUT Set Alamat Menjadi Utama `[🔒 JWT SECURE]`
 * **Endpoint**: `PUT /alamat/:id/primary`
 * **Deskripsi**: Menjadikan alamat yang dipilih sebagai alamat default utama penjemputan/penyerahan laundry.
@@ -796,6 +1893,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
   }
   ```
 
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (Validasi Gagal/Format JSON Salah):
+    ```json
+    {
+      "error": "Format data tidak valid atau field wajib kosong"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
+
 #### 5. DEL Hapus Alamat `[🔒 JWT SECURE]`
 * **Endpoint**: `DELETE /alamat/:id`
 * **Respons Sukses (200 OK)**:
@@ -804,6 +1934,39 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     "message": "Alamat berhasil dihapus"
   }
   ```
+
+* **Respons Error (Gagal)**:
+  * **400 Bad Request** (ID Tidak Valid):
+    ```json
+    {
+      "error": "ID parameter tidak valid"
+    }
+    ```
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **404 Not Found** (Data Kosong):
+    ```json
+    {
+      "error": "Data tidak ditemukan di database"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
 
 ---
 
@@ -888,3 +2051,24 @@ Seluruh endpoint di bawah ini dilindungi oleh middleware ganda: `JWTAuthMiddlewa
     }
   ]
   ```
+
+* **Respons Error (Gagal)**:
+  * **401 Unauthorized** (Token Kosong/Kadaluarsa):
+    ```json
+    {
+      "error": "Token JWT tidak valid atau tidak ditemukan"
+    }
+    ```
+  * **403 Forbidden** (Hak Akses Ditolak):
+    ```json
+    {
+      "error": "Akses ditolak: Anda tidak memiliki peran yang sesuai"
+    }
+    ```
+  * **500 Internal Server Error** (Gangguan Sistem):
+    ```json
+    {
+      "error": "Gagal memproses data atau kesalahan internal server"
+    }
+    ```
+
